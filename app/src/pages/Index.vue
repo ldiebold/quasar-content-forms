@@ -8,13 +8,17 @@
       bordered
     >
       <b-dialog-button
+        v-for="form in formTypes"
+        :key="form.label"
         ref="dialogButton"
+        flat
         no-caps
-        label="Post"
+        :label="form.label"
         class="full-width"
         align="left"
       >
-        <blog-form
+        <component
+          :is="form.is"
           :input-props="{
             filled: true
           }"
@@ -26,30 +30,50 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
+import { defineComponent, shallowRef } from 'vue'
 import BDialogButton from 'components/BDialogButton.vue'
 import BlogForm from 'components/BlogForm.vue'
+import NewExtensionForm from 'components/NewExtensionForm.vue'
+import ExtensionFeatureForm from 'components/ExtensionFeatureForm.vue'
+import ShowcaseForm from 'components/ShowcaseForm.vue'
+import OtherForm from 'components/OtherForm.vue'
+import NewsForm from 'components/NewsForm.vue'
 
 export default defineComponent({
   name: 'PageIndex',
 
   components: {
-    BDialogButton,
-    BlogForm
+    BDialogButton
   },
 
   setup () {
     // axios.get('http://127.0.0.1:8000/sanctum/csrf-cookie').then(response => {
 
     // })
-    const formTypes = ref([
+    const formTypes = shallowRef([
       {
         label: 'Blog Post',
-        to: '/forms/blog-post'
+        is: BlogForm
       },
       {
-        label: 'Quasar Extension Feature',
-        to: '/forms/extension-feature'
+        label: 'New Extension',
+        is: NewExtensionForm
+      },
+      {
+        label: 'Extension Feature',
+        is: ExtensionFeatureForm
+      },
+      {
+        label: 'Showcase (Cool Project)',
+        is: ShowcaseForm
+      },
+      {
+        label: 'News',
+        is: NewsForm
+      },
+      {
+        label: 'Other',
+        is: OtherForm
       }
     ])
 
